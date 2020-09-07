@@ -6,16 +6,20 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="fake-weather-API" />
+        <module name="kurs-easy-api" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="fake-weather-API" target="1.8" />
+      <module name="kurs-easy-api" target="1.8" />
+      <module name="weather-api" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="fake-weather-API" options="-parameters" />
+      <module name="kurs-easy-api" options="-parameters" />
+      <module name="weather-api" options="-parameters" />
     </option>
   </component>
 </project>

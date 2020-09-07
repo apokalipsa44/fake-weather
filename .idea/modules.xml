@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/fake-weather.iml" filepath="$PROJECT_DIR$/.idea/fake-weather.iml" />
-      <module fileurl="file://$PROJECT_DIR$/fake-weather-server/fake-weather-API.iml" filepath="$PROJECT_DIR$/fake-weather-server/fake-weather-API.iml" />
       <module fileurl="file://$PROJECT_DIR$/fake-weather-client/fake-weather-client.iml" filepath="$PROJECT_DIR$/fake-weather-client/fake-weather-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fake-weather-server/kurs-easy-api.iml" filepath="$PROJECT_DIR$/fake-weather-server/kurs-easy-api.iml" />
     </modules>
   </component>
 </project>
