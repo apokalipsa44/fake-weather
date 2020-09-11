@@ -15,7 +15,13 @@ public class PostServices {
         this.postsRepository = postsRepository;
     }
 
-    public List<Post> getAllPosts(){
+    public List<Post> getAllPosts() {
         return postsRepository.findAll();
     }
+
+    public List<Post> getAppPostsWithQuery() {
+        System.out.println("query");
+        return postsRepository.findAllPosts();
+    }
+
 }
