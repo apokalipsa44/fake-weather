@@ -12,4 +12,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("Select p from Post p left join fetch p.comment")
     List<Post> findAllPosts();
 
+
+    @Query("select p from Post p where title like %?1% ")
+    List<Post> findPostsByTitle(String title);
 }

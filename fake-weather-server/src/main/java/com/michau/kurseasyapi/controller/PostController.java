@@ -4,6 +4,7 @@ package com.michau.kurseasyapi.controller;
 import com.michau.kurseasyapi.models.Post;
 import com.michau.kurseasyapi.services.PostServices;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -20,6 +21,11 @@ public class PostController {
     @GetMapping("posts")
     public List<Post> getPosts() {
         return postServices.getAllPosts();
+    }
+
+    @GetMapping("postss")
+    public List<Post> getPostsByTitle(@RequestParam String title){
+        return postServices.getPostsByTitle(title);
     }
 
 }
