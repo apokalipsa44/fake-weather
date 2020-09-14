@@ -1,31 +1,28 @@
 package com.michau.kurseasyapi.controller;
 
-
-import com.michau.kurseasyapi.models.Post;
-import com.michau.kurseasyapi.services.PostServices;
+import com.michau.kurseasyapi.model.Post;
+import com.michau.kurseasyapi.service.PostService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class PostController {
 
-    private PostServices postServices;
+    private final PostService postService;
 
-    public PostController(PostServices postServices) {
-        this.postServices = postServices;
-    }
-
-    @GetMapping("posts")
+    @GetMapping("/posts")
     public List<Post> getPosts() {
-        return postServices.getAllPosts();
+        return postService.getPosts();
     }
 
-    @GetMapping("postss")
-    public List<Post> getPostsByTitle(@RequestParam String title){
-        return postServices.getPostsByTitle(title);
+    @GetMapping("/posts/{id}")
+    public Post getSinglePost(@PathVariable long id) {
+        return postService.getSinglePost(id);
     }
-
 }
