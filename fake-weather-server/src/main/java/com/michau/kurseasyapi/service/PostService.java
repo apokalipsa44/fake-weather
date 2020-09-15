@@ -7,6 +7,7 @@ import com.michau.kurseasyapi.repository.PostRepository;
 import com.michau.kurseasyapi.service.dto.PostDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
@@ -26,8 +27,8 @@ public class PostService {
         this.commentRepository = commentRepository;
     }
 
-    public List<PostDto> getPosts(int page) {
-        List<Post> posts = postRepository.findAllPosts(PageRequest.of(page, BUFFER_SIZE));
+    public List<PostDto> getPosts(int page, Sort.Direction sort) {
+        List<Post> posts = postRepository.findAllPosts(PageRequest.of(page, BUFFER_SIZE, Sort.by(sort, "id")));
         List<PostDto> postDtos = posts.stream().map(post -> PostDto.builder()
                 .id(post.getId()).content(post.getContent())
                 .created(post.getCreated())

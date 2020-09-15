@@ -4,6 +4,7 @@ import com.michau.kurseasyapi.model.Post;
 import com.michau.kurseasyapi.service.PostService;
 import com.michau.kurseasyapi.service.dto.PostDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,9 +20,9 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping("/post")
-    public List<PostDto> getPosts(@RequestParam(required = false) int page) {
+    public List<PostDto> getPosts(@RequestParam(required = false) int page, Sort.Direction sort) {
         int pageToDisplay = page >= 0 ? page : 0;
-        return postService.getPosts(pageToDisplay);
+        return postService.getPosts(pageToDisplay, sort);
     }
 
     @GetMapping("/post/comments")
