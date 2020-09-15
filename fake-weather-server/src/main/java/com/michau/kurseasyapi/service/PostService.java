@@ -55,4 +55,8 @@ public class PostService {
         return postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("error"));
 
     }
+
+    public Post save(Post post) {
+        return postRepository.save(post);
+    }
 }
