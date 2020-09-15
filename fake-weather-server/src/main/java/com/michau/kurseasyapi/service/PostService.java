@@ -68,4 +68,8 @@ public class PostService {
         postToEdit.setTitle(post.getTitle());
         return postToEdit;
     }
+
+    public void deleteById(long id) {
+        postRepository.deleteById(id);
+    }
 }
