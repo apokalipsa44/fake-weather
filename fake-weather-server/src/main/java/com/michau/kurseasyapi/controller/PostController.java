@@ -24,6 +24,12 @@ public class PostController {
         return postService.getPosts(pageToDisplay);
     }
 
+    @GetMapping("/post/comments")
+    public List<Post> getPostsWithComments(@RequestParam(required = false) int page) {
+        int pageToDisplay = page >= 0 ? page : 0;
+        return postService.getPostsWithComments(pageToDisplay);
+    }
+
     @GetMapping("/posts/{id}")
     public Post getSinglePost(@PathVariable long id) {
         return postService.getSinglePost(id);

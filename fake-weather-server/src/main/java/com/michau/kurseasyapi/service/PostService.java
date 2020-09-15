@@ -1,6 +1,8 @@
 package com.michau.kurseasyapi.service;
 
+import com.michau.kurseasyapi.model.Comment;
 import com.michau.kurseasyapi.model.Post;
+import com.michau.kurseasyapi.repository.CommentRepository;
 import com.michau.kurseasyapi.repository.PostRepository;
 import com.michau.kurseasyapi.service.dto.PostDto;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +19,11 @@ public class PostService {
 
     private final int BUFFER_SIZE = 5;
     private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
 
-    public PostService(PostRepository postRepository) {
+    public PostService(PostRepository postRepository, CommentRepository commentRepository) {
         this.postRepository = postRepository;
+        this.commentRepository = commentRepository;
     }
 
     public List<PostDto> getPosts(int page) {
@@ -30,6 +34,20 @@ public class PostService {
                 .title(post.getTitle())
                 .build()).collect(Collectors.toList());
         return postDtos;
+    }
+
+    public List<Post> getPostsWithComments(int page) {
+        List<Post> allPosts = postRepository.findAllPosts(PageRequest.of(page, BUFFER_SIZE));
+        List<Long> postsIds = allPosts.stream()
+                .map(post -> post.getId())
+                .collect(Collectors.toList());
+        List<Comment> comments = commentRepository.findAllByPostIdIn(postsIds);
+
+        allPosts.forEach(post -> post.setComment(
+                comments.stream().filter(
+                        comment -> comment.getPostId() == post.getId())
+                        .collect(Collectors.toList())));
+        return allPosts;
     }
 
     public Post getSinglePost(long id) {
