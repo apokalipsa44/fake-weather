@@ -18,9 +18,10 @@ public class PostController {
 
     private final PostService postService;
 
-    @GetMapping("/posts/page/{page}")
-    public List<PostDto> getPosts(@PathVariable int page) {
-        return postService.getPosts(page);
+    @GetMapping("/post")
+    public List<PostDto> getPosts(@RequestParam(required = false) int page) {
+        int pageToDisplay = page >= 0 ? page : 0;
+        return postService.getPosts(pageToDisplay);
     }
 
     @GetMapping("/posts/{id}")
