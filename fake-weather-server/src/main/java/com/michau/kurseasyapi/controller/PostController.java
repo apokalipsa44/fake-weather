@@ -39,4 +39,10 @@ public class PostController {
         return postService.save(post);
     }
 
+    @PutMapping("/post")
+    public Post editPost(@RequestBody Post post){
+        return postService.save(post);
+    }
+
+
 }

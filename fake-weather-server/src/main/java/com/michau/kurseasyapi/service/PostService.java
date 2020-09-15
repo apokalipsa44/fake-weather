@@ -11,7 +11,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 
@@ -56,7 +59,13 @@ public class PostService {
 
     }
 
+
+    @Transactional
     public Post save(Post post) {
-        return postRepository.save(post);
+        Post postToEdit = postRepository.findById(post.getId())
+                .orElseThrow(() -> new EntityNotFoundException("wrong post data submitted"));
+        postToEdit.setContent(post.getContent());
+        postToEdit.setTitle(post.getTitle());
+        return postToEdit;
     }
 }
