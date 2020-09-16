@@ -6,6 +6,7 @@ import com.michau.kurseasyapi.repository.CommentRepository;
 import com.michau.kurseasyapi.repository.PostRepository;
 import com.michau.kurseasyapi.service.dto.PostDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class PostService {
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
     }
-
+@Cacheable(cacheNames = "Posts")
     public List<PostDto> getPosts(int page, Sort.Direction sort) {
         List<Post> posts = postRepository.findAllPosts(PageRequest.of(page, BUFFER_SIZE, Sort.by(sort, "id")));
         List<PostDto> postDtos = posts.stream().map(post -> PostDto.builder()
@@ -39,7 +40,7 @@ public class PostService {
                 .build()).collect(Collectors.toList());
         return postDtos;
     }
-
+@Cacheable(cacheNames = "PostsWithComments")
     public List<Post> getPostsWithComments(int page) {
         List<Post> allPosts = postRepository.findAllPosts(PageRequest.of(page, BUFFER_SIZE));
         List<Long> postsIds = allPosts.stream()
