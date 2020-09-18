@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class ClientRepository {
+public class OAuthClientProvidersRepository {
 
     private static List<String> clients = Arrays.asList("google", "github");
 

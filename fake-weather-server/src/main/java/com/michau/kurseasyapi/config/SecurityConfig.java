@@ -5,28 +5,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
 import javax.sql.DataSource;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
@@ -34,21 +26,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final DataSource dataSource;
     private final ObjectMapper objectMapper;
-    private final RestAuthenticationSuccessHandler successHandler;
-    private final RestAuthenticationFailureHandler failureHandler;
+    //    private final RestAuthenticationSuccessHandler successHandler;
+//    private final RestAuthenticationFailureHandler failureHandler;
     private final String secret;
-    private final ClientRepository clientRepository;
+    private final OAuthClientProvidersRepository OAuthClientProvidersRepository;
 
-    public SecurityConfig(DataSource dataSource, ObjectMapper objectMapper, RestAuthenticationSuccessHandler successHandler,
-                          RestAuthenticationFailureHandler failureHandler,
-                          @Value("${jwt.secret}") String secret, ClientRepository clientRepository) {
+
+    public SecurityConfig(DataSource dataSource, ObjectMapper objectMapper,
+                          @Value("${jwt.secret}") String secret, OAuthClientProvidersRepository OAuthClientProvidersRepository) {
         this.dataSource = dataSource;
         this.objectMapper = objectMapper;
-        this.successHandler = successHandler;
-        this.failureHandler = failureHandler;
+//        this.successHandler = successHandler;
+//        this.failureHandler = failureHandler;
         this.secret = secret;
-        this.clientRepository=clientRepository;
+        this.OAuthClientProvidersRepository = OAuthClientProvidersRepository;
     }
+
 
 //    @Override
 //    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -70,36 +63,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/swagger-resources/**").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/authenticate").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
-                .defaultSuccessUrl("/test")
+                .defaultSuccessUrl("/authenticate")
                 .failureUrl("/ssij")
-                .clientRegistrationRepository(clientRepository.clientRegistrationRepository())
-                .authorizedClientService(clientRepository.authorizedClientService());;
-//                .and()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .addFilter(authenticationFilter())
-//                .addFilter(new JwtAuthorizationFilter(authenticationManager(), userDetailsManager(), secret))
-//                .exceptionHandling()
+                .clientRegistrationRepository(OAuthClientProvidersRepository.clientRegistrationRepository())
+                .authorizedClientService(OAuthClientProvidersRepository.authorizedClientService())
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilter(new JwtAuthorizationFilter(authenticationManagerBean()))
+                .exceptionHandling()
 //                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-//                .and()
-//                .headers().frameOptions().disable();
+                .and()
+                .headers().frameOptions().disable();
     }
 
-    public JsonObjectAuthenticationFilter authenticationFilter() throws Exception {
-        JsonObjectAuthenticationFilter authenticationFilter = new JsonObjectAuthenticationFilter(objectMapper);
-        authenticationFilter.setAuthenticationSuccessHandler(successHandler);
-        authenticationFilter.setAuthenticationFailureHandler(failureHandler);
-        authenticationFilter.setAuthenticationManager(super.authenticationManager());
-        return authenticationFilter;
+    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
-
-//    @Bean
-//    public UserDetailsManager userDetailsManager() {
-//        return new JdbcUserDetailsManager(dataSource);
-//    }
-
-
 }
