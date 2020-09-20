@@ -1,8 +1,12 @@
 package com.michau.kurseasyapi.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.tomcat.util.http.LegacyCookieProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.embedded.tomcat.TomcatContextCustomizer;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -63,17 +67,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/swagger-resources/**").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/authenticate").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
                 .oauth2Login()
-                .defaultSuccessUrl("/authenticate")
-                .failureUrl("/ssij")
+                .defaultSuccessUrl("/maja")
+                .failureUrl("/failed")
                 .clientRegistrationRepository(OAuthClientProvidersRepository.clientRegistrationRepository())
                 .authorizedClientService(OAuthClientProvidersRepository.authorizedClientService())
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(new JwtFilter(authenticationManager()))
+//                .addFilter(new JwtFilter(authenticationManager()))
 //                .addFilter(new JwtAuthorizationFilter(authenticationManagerBean()))
                 .exceptionHandling()
 //                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
@@ -86,4 +90,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
+
+//    @Bean
+//    public WebServerFactoryCustomizer<TomcatServletWebServerFactory> cookieProcessorCustomizer() {
+//        return tomcatServletWebServerFactory -> tomcatServletWebServerFactory.addContextCustomizers((TomcatContextCustomizer) context -> {
+//            context.setCookieProcessor(new LegacyCookieProcessor());
+//        });
+//    }
 }
