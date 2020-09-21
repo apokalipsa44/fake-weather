@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,12 +19,14 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 @RestController
 public class LoginController {
@@ -58,15 +61,19 @@ authenticationManager.authenticate(new OAuth2AuthenticationToken((OAuth2User) au
     }
 
     @GetMapping("/maja")
-    public String test2(Model model) {
-        Object details = ((UsernamePasswordAuthenticationToken) ((OAuth2Authentication) ((SecurityContextImpl) SecurityContextHolder.getContext()).getAuthentication()).getUserAuthentication()).getDetails();
-        String name = ((LinkedHashMap) details).values().toArray()[1].toString();
-        String picture = ((LinkedHashMap) details).values().toArray()[4].toString();
-        String email = ((LinkedHashMap) details).values().toArray()[5].toString();
+    public String test2(@AuthenticationPrincipal OAuth2User oAuth2User){
+        String oAuth2UserName = oAuth2User.getName();
+        Map<String, Object> oAuth2UserAttributes = oAuth2User.getAttributes();
 
-        model.addAttribute("name", name);
-        model.addAttribute("picture", picture);
-        model.addAttribute("email", email);
+
+//        Object details = ((UsernamePasswordAuthenticationToken) ((OAuth2Authentication) ((SecurityContextImpl) SecurityContextHolder.getContext()).getAuthentication()).getUserAuthentication()).getDetails();
+//        String name = ((LinkedHashMap) details).values().toArray()[1].toString();
+//        String picture = ((LinkedHashMap) details).values().toArray()[4].toString();
+//        String email = ((LinkedHashMap) details).values().toArray()[5].toString();
+//
+//        model.addAttribute("name", name);
+//        model.addAttribute("picture", picture);
+//        model.addAttribute("email", email);
         return "maja oauth2";
     }
 
