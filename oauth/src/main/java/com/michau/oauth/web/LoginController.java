@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LoginController {
 
-    @GetMapping("logged")
+    @GetMapping("/logged")
     public String getLoggedUser(){
         return "user logged in";
     }
 
-    @GetMapping("failed")
+    @GetMapping("/failed")
     public String loginFailed(){
         return "login failed";
     }
