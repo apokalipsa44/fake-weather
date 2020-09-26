@@ -1,5 +1,6 @@
 package com.michau.oauth.service;
 
+import com.michau.oauth.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -37,12 +38,13 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(Authentication authentication) {
+    public String generateToken(User user) {
 
         Map<String, Object> claims = new HashMap<>();
 //        claims.put("id", userId);
-        claims.put("username", authentication.getPrincipal());
-        return createToken(claims, authentication.getPrincipal().toString());
+        claims.put("username", user.getUsername());
+        claims.put("email", user.getEmail());
+        return createToken(claims, user.getUsername());
     }
 
     private String createToken(Map<String, Object> claims, String subject) {

@@ -3,6 +3,7 @@ package com.michau.oauth.web;
 
 import com.google.gson.Gson;
 import com.michau.oauth.extractors.GithubPrincipalExtractor;
+import com.michau.oauth.model.User;
 import com.michau.oauth.service.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
@@ -13,7 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -48,8 +48,13 @@ public class LoginController {
     @GetMapping("/logged")
     @ResponseBody
     public OidcUser getLoggedUser(@AuthenticationPrincipal OidcUser principal) {
-        System.out.println(principal.getName());
-
+        String userName = principal.getGivenName();
+        String email= principal.getEmail();
+        User user=new User(userName);
+        user.setEmail(email);
+//        authenticationManager.authenticate(user);
+        String jwt = jwtUtil.generateToken(user);
+        System.out.println(jwt);
         return principal;
     }
 
