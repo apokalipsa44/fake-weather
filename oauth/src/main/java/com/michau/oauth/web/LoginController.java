@@ -30,29 +30,17 @@ import java.util.LinkedHashMap;
 public class LoginController {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
     private JwtUtil jwtUtil;
 
-    @Bean
-    Authentication getAuthentication() {
-        return SecurityContextHolder.getContext().getAuthentication();
-    }
 
-    @Bean
-    Gson gson() {
-        return new Gson();
-    }
+
 
     @GetMapping("/logged")
     @ResponseBody
     public OidcUser getLoggedUser(@AuthenticationPrincipal OidcUser principal) {
         String userName = principal.getGivenName();
         String email= principal.getEmail();
-        User user=new User(userName);
-        user.setEmail(email);
-//        authenticationManager.authenticate(user);
+        User user=new User(userName, email);
         String jwt = jwtUtil.generateToken(user);
         System.out.println(jwt);
         return principal;

@@ -16,7 +16,7 @@ import java.util.Map;
 @Getter
 @Setter
 public class User implements OAuth2User, Authentication {
-    public User(String username) {
+    public User(String username, String email) {
         this.username = username;
     }
 
