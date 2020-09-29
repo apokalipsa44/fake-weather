@@ -1,4 +1,4 @@
-package main.java.com.example.demo.helpers;
+package com.example.demo.helpers;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

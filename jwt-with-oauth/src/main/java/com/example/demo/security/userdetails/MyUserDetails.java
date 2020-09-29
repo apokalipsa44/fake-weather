@@ -1,4 +1,4 @@
-package main.java.com.example.demo.security.userdetails;
+package com.example.demo.security.userdetails;
 
 import com.example.demo.model.User;
 import org.springframework.security.core.GrantedAuthority;

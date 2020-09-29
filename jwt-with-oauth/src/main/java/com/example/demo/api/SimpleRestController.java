@@ -1,6 +1,6 @@
-package main.java.com.example.demo.api;
+package com.example.demo.api;
 
-import main.java.com.example.demo.helpers.StaticJwtCreator;
+import com.example.demo.helpers.StaticJwtCreator;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

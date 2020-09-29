@@ -1,4 +1,4 @@
-package main.java.com.example.demo.security;
+package com.example.demo.security;
 
 import com.example.demo.security.userdetails.MyUserDetailsService;
 import org.springframework.context.annotation.Bean;
