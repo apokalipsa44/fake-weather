@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/fake-weather-client/fake-weather-client.iml" filepath="$PROJECT_DIR$/fake-weather-client/fake-weather-client.iml" />
-      <module fileurl="file://$PROJECT_DIR$/fake-weather-server/kurs-easy-api.iml" filepath="$PROJECT_DIR$/fake-weather-server/kurs-easy-api.iml" />
-      <module fileurl="file://$PROJECT_DIR$/oauth/oauth.iml" filepath="$PROJECT_DIR$/oauth/oauth.iml" />
     </modules>
   </component>
 </project>
